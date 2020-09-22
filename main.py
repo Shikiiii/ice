@@ -12,7 +12,7 @@ import datetime
 from datetime import datetime
 import jishaku
 
-bot = commands.Bot(command_prefix="+", case_insensitive=True)
+bot = commands.Bot(command_prefix=".", case_insensitive=True)
 bot.owner_ids = {680519129219727380}
 
 countmessages = False
@@ -24,21 +24,21 @@ trigger_chan = None
 log = None
 lb_channel = None
 lb_msg = None
-dawn = None
+ice = None
 
 def get_key(val): 
     for key, value in alltimemsg.items(): 
          if val == value: 
              return key 
 
-def fetch_top_members():
+def fetch_top_members_lb():
 	msgcount = alltimemsg.copy()
 	msgdata_values = list(alltimemsg.values())
 	msgdata_values.sort(reverse=True)
 	print(msgcount)
 	d = 1
 	top_members = " " 
-	while d < 21:
+	while d < 11:
 		idd = None
 		try:
 			for key, value in msgcount.items(): 
@@ -47,7 +47,29 @@ def fetch_top_members():
 			user = bot.get_user(idd)
 			top_members = top_members + "\n**{}.** {} | **{}** messages".format(d, user.mention, msgdata_values[0])
 		except:
-			top_members = top_members + "\n**{}.** \"N/A (LEFT THE SERVER)\" | **{}** messages".format(d, msgdata_values[0])
+			top_members = top_members + "\n**{}.** \"? (User left the server)\" | **{}** messages".format(d, msgdata_values[0])
+		del msgdata_values[0]
+		del msgcount[idd]
+		d += 1
+	return top_members
+
+def fetch_top_members_msg():
+	msgcount = alltimemsg.copy()
+	msgdata_values = list(alltimemsg.values())
+	msgdata_values.sort(reverse=True)
+	print(msgcount)
+	d = 1
+	top_members = " " 
+	while d < 26:
+		idd = None
+		try:
+			for key, value in msgcount.items(): 
+				if msgdata_values[0] == value: 
+					idd = int(key)
+			user = bot.get_user(idd)
+			top_members = top_members + "\n**{}.** {} | **{}** messages".format(d, user.mention, msgdata_values[0])
+		except:
+			top_members = top_members + "\n**{}.** \"? (User left the server)\" | **{}** messages".format(d, msgdata_values[0])
 		del msgdata_values[0]
 		del msgcount[idd]
 		d += 1
@@ -63,9 +85,9 @@ async def on_ready():
 	storage = bot.get_channel(668462634634575905)
 	trigger_chan = bot.get_channel(728009012028768257)
 	log = bot.get_channel(729058195330433094)
-	lb_channel = bot.get_channel(745266529695957042)
-	lb_msg = await lb_channel.fetch_message(746295619974463499)
-	dawn = bot.get_guild(699268126008672259)
+	lb_channel = bot.get_channel(756212532162855052)
+	lb_msg = await lb_channel.fetch_message(757885971831455774)
+	ice = bot.get_guild(734867158475079690)
 	async for message in trigger_chan.history(limit=1):
 		if message.content == "reset":
 			print("Resuming resetting...")
@@ -73,7 +95,7 @@ async def on_ready():
 				x = message.content.split("|")
 				alltimemsg[int(x[0])] = int(x[1])
 				msgidinstorage[int(x[0])] = message.id
-			a = fetch_top_members()
+			a = fetch_top_members_msg()
 			embed = discord.Embed(description="{}".format(a), color=0x000000)
 			embed.set_footer(text="WEEKLY RESET | Seeing this means that the message leaderboard has been reset for its weekly reset.")
 			await log.send(embed=embed)
@@ -102,18 +124,18 @@ async def on_ready():
 			message = await storage.fetch_message(msgidinstorage[item])
 			await message.edit(content=f"{item}|{alltimemsg[item]}")
 		try:
-			a = fetch_top_members()
+			a = fetch_top_members_msg()
 		except:
-			embed = discord.Embed(description="There's not enough ranked people this week to display the leaderboard. At least 10 people need to be ranked.", color=0x000000)
-			embed.set_thumbnail(url=dawn.icon_url)
-			await lb_msg.edit(content="**To check your rank/messages, you can do ``+rank`` (or ``+r`` for short). You can also check someone else's rank with the same command.**", embed=embed)
+			embed = discord.Embed(description="There's not enough ranked people this week to display the leaderboard. At least 25 people need to be ranked.", color=0x000000)
+			embed.set_thumbnail(url=ice.icon_url)
+			await lb_msg.edit(content="**To check your rank/messages, you can do ``.rank`` (or ``.r`` for short). You can also check someone else's rank with the same command.**", embed=embed)
 			await asyncio.sleep(60)
 			continue
 		embed = discord.Embed(description=a, color=0x000000)
-		embed.set_author(name="dawn's weekly leaderboard", icon_url=bot.user.avatar_url)
-		embed.set_thumbnail(url=dawn.icon_url)
+		embed.set_author(name="ice's weekly leaderboard", icon_url=bot.user.avatar_url)
+		embed.set_thumbnail(url=ice.icon_url)
 		embed.set_footer(text="Resets every Sunday!")
-		await lb_msg.edit(content="**To check your rank/messages, you can do ``+rank`` (or ``+r`` for short). You can also check someone else's rank with the same command.**", embed=embed)
+		await lb_msg.edit(content="**To check your rank/messages, you can do ``.rank`` (or ``.r`` for short). You can also check someone else's rank with the same command.**", embed=embed)
 		await asyncio.sleep(10)
 				
 @bot.event
@@ -123,7 +145,7 @@ async def on_message(m):
 	if m.channel.id == 728009012028768257 and m.content == "reset":
 			countmessages = False
 			print("Starting resetting...")
-			a = fetch_top_members()
+			a = fetch_top_members_msg()
 			embed = discord.Embed(description="{}".format(a), color=0x000000)
 			embed.set_footer(text="WEEKLY RESET | Seeing this means that the message leaderboard has been reset for its weekly reset.")
 			await log.send(embed=embed)
@@ -136,7 +158,7 @@ async def on_message(m):
 			msgidinstorage.clear()
 			countmessages = True
 			return
-	if countmessages and m.guild is not None and m.guild.id == 699268126008672259 and m.author.id != bot.user.id and m.author.bot == False and m.channel.id == 739293045044019301:
+	if countmessages and m.guild is not None and m.guild.id == 734867158475079690 and m.author.id != bot.user.id and m.author.bot == False and m.channel.id == 757825303929290753:
 		try:
 			msgs = alltimemsg[mid]
 			alltimemsg[mid] = msgs + 1
@@ -168,7 +190,7 @@ async def rank(ctx, user: discord.Member):
 			break
 		e += 1
 	pos += 1
-	embed = discord.Embed(description="has sent **{}** messages this week.\n\nThey're ranked **{}** out of **{}** ranked people this week.".format(msgcount, pos, len(alltimemsg)))
+	embed = discord.Embed(description="**{}** has sent **{}** messages this week.\n\nThey're ranked **{}** out of **{}** ranked people this week.".format(user.display_name, msgcount, pos, len(alltimemsg)))
 	embed.set_author(name="{}".format(user.display_name), icon_url=user.avatar_url)
 	await ctx.send(embed=embed)
 
@@ -191,7 +213,7 @@ async def rank_error(ctx, error):
 				break
 			e += 1
 		pos += 1
-		embed = discord.Embed(description="has sent **{}** messages this week.\n\nThey're ranked **{}** out of **{}** ranked people this week.".format(msgcount, pos, len(alltimemsg)))
+		embed = discord.Embed(description="**{}** has sent **{}** messages this week.\n\nThey're ranked **{}** out of **{}** ranked people this week.".format(ctx.message.author.display_name, msgcount, pos, len(alltimemsg)))
 		embed.set_author(name="{}".format(ctx.message.author.display_name), icon_url=ctx.message.author.avatar_url)
 		await ctx.send(embed=embed)
 	elif isinstance(error, commands.BadArgument):
@@ -204,25 +226,24 @@ async def rank_error(ctx, error):
 		embed = discord.Embed(description="{}".format(error), color=0x000000)
 		await ctx.send("uh, oops, i guess?", embed=embed)
 
-#@bot.command(aliases=["lb"])
-#@commands.cooldown(1, 10, commands.BucketType.guild)
-#async def leaderboard(ctx):
-#	a = fetch_top_members()
-#	embed = discord.Embed(description=a, color=0x000000)
-#	embed.set_author(name="babi's weekly leaderboard", icon_url=bot.user.avatar_url)
-#	embed.set_footer(text="Resets every Sunday!")
-#	await ctx.send(embed=embed)
+@bot.command(aliases=["lb"])
+@commands.cooldown(1, 10, commands.BucketType.guild)
+async def leaderboard(ctx):
+	a = fetch_top_members_lb()
+	embed = discord.Embed(description=a, color=0x000000)
+	embed.set_author(name="ice's weekly leaderboard", icon_url=bot.user.avatar_url)
+	embed.set_footer(text="Resets every Sunday!")
+	await ctx.send(embed=embed)
 
-#@leaderboard.error
-#async def leaderboard_error(ctx, error):
-#	if isinstance(error, commands.CommandOnCooldown):
-#		await ctx.send(f"**{ctx.message.author.display_name}**, slow down! you can use this command again in **{round(error.retry_after, 1)}**s.\n\n**note: the cooldown for this command is for everyone in the server, meaning that once someone uses the command, everyone is on cooldown.**\nwhy? because we don't want to overload the bot, do we?")
-#	else:
-#		print('Ignoring exception in command av:', file=sys.stderr)
-#		traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)
-#		embed = discord.Embed(description="There's not enough ranked people this week to display the leaderboard. At least 10 people need to be ranked.".format(error), color=0x000000)
-#		await ctx.send("{}".format(ctx.message.author.mention), embed=embed)
+@leaderboard.error
+async def leaderboard_error(ctx, error):
+	if isinstance(error, commands.CommandOnCooldown):
+		await ctx.send(f"**{ctx.message.author.display_name}**, slow down! you can use this command again in **{round(error.retry_after, 1)}**s.\n\n**note: the cooldown for this command is for everyone in the server, meaning that once someone uses the command, everyone is on cooldown.**\nwhy? because we don't want to overload the bot, do we?")
+	else:
+		print('Ignoring exception in command av:', file=sys.stderr)
+		traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)
+		embed = discord.Embed(description="There's not enough ranked people this week to display the leaderboard. At least 10 people need to be ranked.".format(error), color=0x000000)
+		await ctx.send("{}".format(ctx.message.author.mention), embed=embed)
 
 bot.load_extension("jishaku")  
-bot.run("NzQ2MjkwNjEzMTc5MjUyODg4.Xz-LSw.JGaqhrzTaL8KFpmi_h-adgDJoCI")
-
+#bot.run("NzU3Nzk1ODQxMTAzNzU3NDY1.X2lmXw.WSPmuDBRGkvLDWhIQYLuELRYafA")
