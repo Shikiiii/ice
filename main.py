@@ -12,7 +12,7 @@ import datetime
 from datetime import datetime
 import jishaku
 
-bot = commands.Bot(command_prefix=".", case_insensitive=True)
+bot = commands.Bot(command_prefix="a!", case_insensitive=True)
 bot.owner_ids = {680519129219727380}
 
 countmessages = False
@@ -85,8 +85,8 @@ async def on_ready():
 	storage = bot.get_channel(668462634634575905)
 	trigger_chan = bot.get_channel(728009012028768257)
 	log = bot.get_channel(729058195330433094)
-	lb_channel = bot.get_channel(756212532162855052)
-	lb_msg = await lb_channel.fetch_message(757885971831455774)
+	lb_channel = bot.get_channel(760418426455195668
+	lb_msg = await lb_channel.fetch_message(762548536553635840
 	ice = bot.get_guild(734867158475079690)
 	temp_numb_counter = 0
 	async for message in trigger_chan.history(limit=None):
