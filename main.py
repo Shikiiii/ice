@@ -85,7 +85,7 @@ async def on_ready():
 	storage = bot.get_channel(668462634634575905)
 	trigger_chan = bot.get_channel(728009012028768257)
 	log = bot.get_channel(729058195330433094)
-	lb_channel = bot.get_channel(760418426455195668
+	lb_channel = bot.get_channel(760418426455195668)
 	lb_msg = await lb_channel.fetch_message(762548536553635840
 	ice = bot.get_guild(734867158475079690)
 	temp_numb_counter = 0
