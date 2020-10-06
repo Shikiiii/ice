@@ -131,14 +131,14 @@ async def on_ready():
 		except:
 			embed = discord.Embed(description="There's not enough ranked people to display the leaderboard. At least 25 people need to be ranked.", color=0x000000)
 			embed.set_thumbnail(url=ice.icon_url)
-			await lb_msg.edit(content="**To check your rank/messages, you can do ``.rank`` (or ``.r`` for short). You can also check someone else's rank with the same command.**", embed=embed)
+			await lb_msg.edit(content="**To check your rank/messages, you can do ``a!rank`` (or ``a!`` for short). You can also check someone else's rank with the same command. You may also use ``a!lb`` to bring up a shorter leaderboard anywhere.**", embed=embed)
 			await asyncio.sleep(60)
 			continue
 		embed = discord.Embed(description=a, color=0x000000)
 		embed.set_author(name="ice's message leaderboard", icon_url=bot.user.avatar_url)
 		embed.set_thumbnail(url=ice.icon_url)
 		embed.set_footer(text="Resets every 2 weeks on Sunday!")
-		await lb_msg.edit(content="**To check your rank/messages, you can do ``.rank`` (or ``.r`` for short). You can also check someone else's rank with the same command.**", embed=embed)
+		await lb_msg.edit(content="**To check your rank/messages, you can do ``a!rank`` (or ``a!`` for short). You can also check someone else's rank with the same command. You may also use ``a!lb`` to bring up a shorter leaderboard anywhere.**", embed=embed)
 		await asyncio.sleep(10)
 				
 @bot.event
