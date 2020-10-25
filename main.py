@@ -82,14 +82,14 @@ async def on_ready():
 	global storage
 	global trigger_chan
 	global log
-	#storage = bot.get_channel(668462634634575905)
-	storage = bot.get_channel(769971712904527934)
+	storage = bot.get_channel(668462634634575905)
+	#storage = bot.get_channel(769971712904527934)
 	trigger_chan = bot.get_channel(728009012028768257)
 	log = bot.get_channel(729058195330433094)
-	#lb_channel = bot.get_channel(760418426455195668)
-	lb_channel = bot.get_channel(769971862251634688)
-	#lb_msg = await lb_channel.fetch_message(762548536553635840)
-	lb_msg = await lb_channel.fetch_message(769971918111375370)
+	lb_channel = bot.get_channel(760418426455195668)
+	#lb_channel = bot.get_channel(769971862251634688)
+	lb_msg = await lb_channel.fetch_message(762548536553635840)
+	#lb_msg = await lb_channel.fetch_message(769971918111375370)
 	ice = bot.get_guild(734867158475079690)
 	temp_numb_counter = 0
 	async for message in trigger_chan.history(limit=None):
@@ -134,14 +134,14 @@ async def on_ready():
 		except:
 			embed = discord.Embed(description="There's not enough ranked people to display the leaderboard. At least 25 people need to be ranked.", color=0x000000)
 			embed.set_thumbnail(url=ice.icon_url)
-			await lb_msg.edit(content="**To check your rank/messages, you can do ``a!rank`` (or ``a!`` for short). You can also check someone else's rank with the same command. You may also use ``a!lb`` to bring up a shorter leaderboard anywhere.**", embed=embed)
+			await lb_msg.edit(content="**To check your rank/messages, you can do ``a!rank`` (or ``a!r`` for short). You can also check someone else's rank with the same command. You may also use ``a!lb`` to bring up a shorter leaderboard anywhere.**", embed=embed)
 			await asyncio.sleep(60)
 			continue
 		embed = discord.Embed(description=a, color=0x000000)
 		embed.set_author(name="ice's message leaderboard", icon_url=bot.user.avatar_url)
 		embed.set_thumbnail(url=ice.icon_url)
 		embed.set_footer(text="Resets every 2 weeks on Sunday!")
-		await lb_msg.edit(content="**To check your rank/messages, you can do ``a!rank`` (or ``a!`` for short). You can also check someone else's rank with the same command. You may also use ``a!lb`` to bring up a shorter leaderboard anywhere.**", embed=embed)
+		await lb_msg.edit(content="**To check your rank/messages, you can do ``a!rank`` (or ``a!r`` for short). You can also check someone else's rank with the same command. You may also use ``a!lb`` to bring up a shorter leaderboard anywhere.**", embed=embed)
 		await asyncio.sleep(10)
 				
 @bot.event
