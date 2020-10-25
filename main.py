@@ -92,7 +92,7 @@ async def on_ready():
 	async for message in trigger_chan.history(limit=None):
 		if message.content == "reset":
 			temp_numb_counter += 1
-		if temp_numb_counter == 2:
+		if temp_numb_counter > 1:
 			print("Resuming resetting...")
 			async for message in storage.history(limit=None):
 				x = message.content.split("|")
@@ -150,7 +150,7 @@ async def on_message(m):
 			async for message in trigger_chan.history(limit=None):
 				if message.content == "reset":
 					temp_numb_counter += 1
-				if temp_numb_counter == 2:
+				if temp_numb_counter > 1:
 					countmessages = False
 					print("Starting resetting...")
 					a = fetch_top_members_msg()
