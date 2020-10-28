@@ -142,7 +142,7 @@ async def on_ready():
 		embed.set_thumbnail(url=ice.icon_url)
 		embed.set_footer(text="Resets every 2 weeks on Sunday!")
 		await lb_msg.edit(content="**To check your rank/messages, you can do ``a!rank`` (or ``a!r`` for short). You can also check someone else's rank with the same command. You may also use ``a!lb`` to bring up a shorter leaderboard anywhere.**", embed=embed)
-		await asyncio.sleep(10)
+		await asyncio.sleep(15)
 				
 @bot.event
 async def on_message(m):
