@@ -169,7 +169,7 @@ async def on_message(m):
 					msgidinstorage.clear()
 					countmessages = True
 					return
-	if countmessages and m.guild is not None and m.guild.id == 734867158475079690 and m.author.id != bot.user.id and m.author.bot == False and m.channel.id == 761459224059576320:
+	if countmessages and m.guild is not None and m.guild.id == 734867158475079690 and m.author.id != bot.user.id and m.author.bot == False and "chat" in m.channel.name:
 		try:
 			msgs = alltimemsg[mid]
 			alltimemsg[mid] = msgs + 1
