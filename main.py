@@ -85,7 +85,7 @@ async def on_ready():
 	storage = bot.get_channel(668462634634575905)
 	#storage = bot.get_channel(769971712904527934)
 	trigger_chan = bot.get_channel(728009012028768257)
-	log = bot.get_channel(729058195330433094)
+	log = bot.get_channel(739760112725524522)
 	lb_channel = bot.get_channel(760418426455195668)
 	#lb_channel = bot.get_channel(769971862251634688)
 	lb_msg = await lb_channel.fetch_message(762548536553635840)
@@ -101,10 +101,16 @@ async def on_ready():
 				x = message.content.split("|")
 				alltimemsg[int(x[0])] = int(x[1])
 				msgidinstorage[int(x[0])] = message.id
-			a = fetch_top_members_msg()
-			embed = discord.Embed(description="{}".format(a), color=0x000000)
-			embed.set_footer(text=" RESET | Seeing this means that the message leaderboard has been reset for its weekly reset.")
-			await log.send(embed=embed)
+			msgcount = alltimemsg.copy()
+			msgdata_values = list(alltimemsg.values())
+			msgdata_values.sort(reverse=True)
+			user = None
+			msg_count = 0
+			for key, value in msgcount.items(): 
+				if msgdata_values[0] == value: 
+					user = bot.get_user(idd)
+					msg_count = value
+			await log.send(f"**LEADERBOARD RESET** | Congratulations to {user.mention} for reaching and maintaining position 1 on the leaderboard, ending with **{msg_count} messages**. The leaderboard will now reset.")
 			async for message in storage.history(limit=None):
 				await message.delete()
 			async for message in trigger_chan.history(limit=10):
@@ -156,10 +162,16 @@ async def on_message(m):
 				if temp_numb_counter > 1:
 					countmessages = False
 					print("Starting resetting...")
-					a = fetch_top_members_msg()
-					embed = discord.Embed(description="{}".format(a), color=0x000000)
-					embed.set_footer(text="RESET | Seeing this means that the message leaderboard has been reset for its weekly reset.")
-					await log.send(embed=embed)
+					msgcount = alltimemsg.copy()
+					msgdata_values = list(alltimemsg.values())
+					msgdata_values.sort(reverse=True)
+					user = None
+					msg_count = 0
+					for key, value in msgcount.items(): 
+						if msgdata_values[0] == value: 
+							user = bot.get_user(idd)
+							msg_count = value
+					await log.send(f"**LEADERBOARD RESET** | Congratulations to {user.mention} for reaching and maintaining position 1 on the leaderboard, ending with **{msg_count} messages**. The leaderboard will now reset.")
 					async for message in storage.history(limit=None):
 						await message.delete()
 					async for message in trigger_chan.history(limit=10):
