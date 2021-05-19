@@ -501,4 +501,4 @@ async def status_error(ctx, error):
         traceback.print_exception(type(error), error, None, file=sys.stderr)
 
 bot.load_extension("jishaku")  
-bot.run("NzU3Nzk1ODQxMTAzNzU3NDY1.X2lmXw.WSPmuDBRGkvLDWhIQYLuELRYafA")
+bot.run("Insert token here")
